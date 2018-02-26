@@ -1,9 +1,9 @@
-# jsonp-parser
+# jsonp-node
 nodejs jsonp
 
 ## parse
 ```javascript
-const JSONP = require('jsonp-parser');
+const JSONP = require('jsonp-node');
 
 const data = 'callbackName({"a":1,"b":"abc"})';
 
@@ -12,7 +12,7 @@ const result = JSONP.parse(data, 'callbackName');
 
 ## stringify
 ```javascript
-const JSONP = require('jsonp-parser');
+const JSONP = require('jsonp-node');
 
 const data = { a: 1, b: "abc" };
 
