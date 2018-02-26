@@ -1,7 +1,7 @@
 {
     "name": "jsonp-node",
     "version": "0.0.2",
-    "description": "nodejs jsonp parser",
+    "description": "nodejs jsonp",
     "main": "./bin/index.js",
     "types": "./bin/index.d.ts",
     "scripts": {
