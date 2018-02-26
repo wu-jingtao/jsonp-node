@@ -5,10 +5,10 @@ import * as vm from 'vm';
  * @param jsonp jsonp数据
  * @param callback jsonp指定的回调函数名称
  */
-function parse<T>(jsonp: string, callback: string) {
+function parse(jsonp: string, callback: string) {
     const ctx = {
-        result: undefined as any,
-        [callback]: function (data: T) {
+        result: null as any,
+        [callback]: function (data: any) {
             ctx.result = data;
         }
     };
