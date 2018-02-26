@@ -1,6 +1,6 @@
 {
-    "name": "jsonp-parser",
-    "version": "0.0.1",
+    "name": "jsonp-node",
+    "version": "0.0.2",
     "description": "nodejs jsonp parser",
     "main": "./bin/index.js",
     "types": "./bin/index.d.ts",
@@ -11,18 +11,18 @@
     "keywords": [
         "jsonp",
         "parse",
-        "parser"
+        "stringify"
     ],
     "author": "wujingtao",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mx601595686/jsonp-parser.git"
+        "url": "git+https://github.com/mx601595686/jsonp-node.git"
     },
     "bugs": {
-        "url": "https://github.com/mx601595686/jsonp-parser/issues"
+        "url": "https://github.com/mx601595686/jsonp-node/issues"
     },
-    "homepage": "https://github.com/mx601595686/jsonp-parser#readme",
+    "homepage": "https://github.com/mx601595686/jsonp-node#readme",
     "devDependencies": {
         "@types/expect.js": "^0.3.29",
         "@types/mocha": "^2.2.40",

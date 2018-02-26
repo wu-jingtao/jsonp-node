@@ -5,7 +5,7 @@ import * as vm from 'vm';
  * @param jsonp jsonp数据
  * @param callback jsonp指定的回调函数名称
  */
-function jsonp_parser<T>(jsonp: string, callback: string) {
+function parse<T>(jsonp: string, callback: string) {
     const ctx = {
         result: undefined as any,
         [callback]: function (data: T) {
@@ -18,4 +18,13 @@ function jsonp_parser<T>(jsonp: string, callback: string) {
     return ctx.result;
 }
 
-export = jsonp_parser;
+/**
+ * 将数据序列化成jsonp格式
+ * @param data 要序列化的数据
+ * @param callback 回调函数的名称，默认为随机数
+ */
+function stringify(data: any, callback: string = `_${(Math.random() * 10000000000).toFixed(0)}`) {
+    return `${callback}(${JSON.stringify(data)})`;
+}
+
+export = { parse, stringify };

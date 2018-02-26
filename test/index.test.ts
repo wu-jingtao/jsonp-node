@@ -1,8 +1,13 @@
 import expect = require('expect.js');
 
-import jsonp_parser = require('../src');
+import JSONP = require('../src');
 
-it('测试', function () {
-    const data = 'callback({"a":1,"b":"abc"})';
-    expect(jsonp_parser(data, 'callback')).to.be.eql({ a: 1, b: "abc" });
+it('测试 parse', function () {
+    const data = 'callbackName({"a":1,"b":"abc"})';
+    expect(JSONP.parse(data, 'callbackName')).to.be.eql({ a: 1, b: "abc" });
+});
+
+it('测试 stringify', function () {
+    const data = 'callbackName({"a":1,"b":"abc"})';
+    expect(JSONP.stringify({ a: 1, b: "abc" }, 'callbackName')).to.be(data);
 });
