@@ -1,6 +1,6 @@
 {
     "name": "jsonp-node",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "nodejs jsonp",
     "main": "./bin/index.js",
     "types": "./bin/index.d.ts",
