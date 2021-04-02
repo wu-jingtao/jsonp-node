@@ -17,12 +17,12 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mx601595686/jsonp-node.git"
+        "url": "git+https://github.com/wu-jingtao/jsonp-node.git"
     },
     "bugs": {
-        "url": "https://github.com/mx601595686/jsonp-node/issues"
+        "url": "https://github.com/wu-jingtao/jsonp-node/issues"
     },
-    "homepage": "https://github.com/mx601595686/jsonp-node#readme",
+    "homepage": "https://github.com/wu-jingtao/jsonp-node#readme",
     "devDependencies": {
         "@types/expect.js": "^0.3.29",
         "@types/mocha": "^5.2.5",
