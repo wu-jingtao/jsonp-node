@@ -1,6 +1,6 @@
 {
     "name": "jsonp-node",
-    "version": "0.1.2",
+    "version": "1.0.1",
     "description": "nodejs jsonp",
     "keywords": [
         "jsonp",
