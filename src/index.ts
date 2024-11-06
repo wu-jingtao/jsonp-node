@@ -16,7 +16,7 @@ function parse(data: string): unknown {
  * @param data 要序列化的数据
  * @param callbackName 回调函数的名称
  */
-function stringify(data: any, callbackName?: string): string {
+function stringify(data: any, callbackName: string): string {
     return `${callbackName}(${JSON.stringify(data)});`;
 }
 
