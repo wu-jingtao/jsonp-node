@@ -108,3 +108,5 @@ export function stringify(data: any, identifier: string, style: 'cb' | 'var' | '
         }
     }
 }
+
+export default { parse, stringify };

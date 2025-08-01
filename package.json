@@ -1,6 +1,6 @@
 {
     "name": "jsonp-node",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "nodejs jsonp parser",
     "keywords": [
         "jsonp",
