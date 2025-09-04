@@ -1,6 +1,6 @@
 {
     "name": "jsonp-node",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "nodejs jsonp parser",
     "keywords": [
         "jsonp",
@@ -31,13 +31,13 @@
         "@types/expect.js": "^0.3.32",
         "@types/lodash": "^4.17.20",
         "@types/mocha": "^10.0.10",
-        "@types/node": "^24.1.0",
+        "@types/node": "^24.3.1",
         "@types/strip-comments": "^2.0.4",
         "eslint-config-sufu": "^3.0.9",
         "expect.js": "^0.3.1",
-        "mocha": "^11.7.1",
-        "tsx": "^4.20.3",
-        "typescript": "^5.8.3"
+        "mocha": "^11.7.2",
+        "tsx": "^4.20.5",
+        "typescript": "^5.9.2"
     },
     "dependencies": {
         "json5": "^2.2.3",

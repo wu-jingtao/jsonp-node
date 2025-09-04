@@ -34,16 +34,16 @@ export function parse<T = unknown>(data: string, json5: boolean = false, stripCo
     let jsonEnd: number;
 
     // 尝试匹配回调函数式
-    const callbackStartMatch = data.match(/[a-zA-Z_$][a-zA-Z0-9_$]*\s*\(\s*/);
-    const callbackEndMatch = data.match(/\s*\)/);
+    const callbackStartMatch = data.match(/[a-zA-Z_$][a-zA-Z0-9_$]*\s*(?:\(\s*)+/);
+    const callbackEndMatch = data.match(/(?:\s*\))+(?:\s*;)*\s*$/);
 
     if (callbackStartMatch && callbackEndMatch && callbackStartMatch.index! < callbackEndMatch.index!) {
         jsonStart = callbackStartMatch.index! + callbackStartMatch[0].length;
         jsonEnd = callbackEndMatch.index!;
     } else {
         // 尝试匹配变量式
-        const varStartMatch = data.match(/[a-zA-Z_$][a-zA-Z0-9_$]*\s*=\s*/);
-        const varEndMatch = data.match(/\s*(?:;|$)/);
+        const varStartMatch = data.match(/[a-zA-Z_$][a-zA-Z0-9_$]*\s*=\s*(?:\(\s*)*/);
+        const varEndMatch = data.match(/(?:\s*\))*(?:\s*;)*\s*$/);
 
         if (varStartMatch && varEndMatch && varStartMatch.index! < varEndMatch.index!) {
             jsonStart = varStartMatch.index! + varStartMatch[0].length;

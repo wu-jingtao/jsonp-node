@@ -8,46 +8,38 @@ describe('测试 parse', () => {
         describe('测试 解析对象', function () {
             it('测试 解析 JSON', function () {
                 expect(parse('callback({ "name": "test", "age": 18 });')).to.eql({ name: 'test', age: 18 });
-                expect(parse('callback({ "name": "test", "age": 18 })')).to.eql({ name: 'test', age: 18 });
             });
 
             it('测试 解析 JSON5', function () {
                 expect(parse('callback({ name: "test", age: 18 });', true)).to.eql({ name: 'test', age: 18 });
-                expect(parse('callback({ name: "test", age: 18 })', true)).to.eql({ name: 'test', age: 18 });
             });
         });
 
         describe('测试 解析数组', function () {
             it('测试 解析 JSON', function () {
                 expect(parse('callback([{ "name": "test", "age": 18 }]);')).to.eql([{ name: 'test', age: 18 }]);
-                expect(parse('callback([{ "name": "test", "age": 18 }])')).to.eql([{ name: 'test', age: 18 }]);
             });
 
             it('测试 解析 JSON5', function () {
                 expect(parse('callback([{ name: "test", age: 18 }]);', true)).to.eql([{ name: 'test', age: 18 }]);
-                expect(parse('callback([{ name: "test", age: 18 }])', true)).to.eql([{ name: 'test', age: 18 }]);
             });
         });
 
         describe('测试 解析字面量', function () {
             it('测试 解析字符串', () => {
                 expect(parse('showMessage("hello world");')).to.be('hello world');
-                expect(parse('showMessage("hello world")')).to.be('hello world');
             });
 
             it('测试 解析数字', () => {
                 expect(parse('count(123.45);')).to.be(123.45);
-                expect(parse('count(123.45)')).to.be(123.45);
             });
 
             it('测试 解析布尔', () => {
                 expect(parse('is(true);')).to.be(true);
-                expect(parse('is(true)')).to.be(true);
             });
 
             it('测试 解析 null', () => {
                 expect(parse('handleNull(null);')).to.be(null);
-                expect(parse('handleNull(null)')).to.be(null);
             });
         });
 
@@ -56,10 +48,6 @@ describe('测试 parse', () => {
                 expect(parse('callback({ "name": "test" }); // 行注释', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('callback({ "name": "test" });// 行注释', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('callback({ "name": "test" });//行注释', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('callback({ "name": "test" }) // 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('callback({ "name": "test" })// 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('callback({ "name": "test" })//行注释', undefined, true)).to.eql({ name: 'test' });
             });
 
             it('测试 开头的块注释', () => {
@@ -67,11 +55,6 @@ describe('测试 parse', () => {
                 expect(parse('/* 注释 */callback({ "name": "test" });', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('/* 注释*/callback({ "name": "test" });', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('/*注释*/callback({ "name": "test" });', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('/* 注释 */ callback({ "name": "test" })', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释 */callback({ "name": "test" })', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释*/callback({ "name": "test" })', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/*注释*/callback({ "name": "test" })', undefined, true)).to.eql({ name: 'test' });
             });
 
             it('测试 结尾的块注释', () => {
@@ -79,31 +62,17 @@ describe('测试 parse', () => {
                 expect(parse('callback({ "name": "test" });/* 注释 */', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('callback({ "name": "test" });/*注释 */', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('callback({ "name": "test" });/*注释*/', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('callback({ "name": "test" }) /* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('callback({ "name": "test" })/* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('callback({ "name": "test" })/*注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('callback({ "name": "test" })/*注释*/', undefined, true)).to.eql({ name: 'test' });
             });
 
             it('测试 夹杂在数据之间的块注释', () => {
                 expect(parse('callback( /* 注释 */ { "name": "test" } /* 注释 */ );', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('callback(/* 注释 */{ "name": "test" }/* 注释 */);', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('callback( /* 注释 */ { "name": "test" } /* 注释 */ )', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('callback(/* 注释 */{ "name": "test" }/* 注释 */)', undefined, true)).to.eql({ name: 'test' });
             });
 
             it('测试 开头与结尾的块注释', () => {
                 expect(parse(`
                     /* 注释 */
                     callback({ "name": "test" });
-                    /* 注释 */
-                `, undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse(`
-                    /* 注释 */
-                    callback({ "name": "test" })
                     /* 注释 */
                 `, undefined, true)).to.eql({ name: 'test' });
             });
@@ -115,13 +84,6 @@ describe('测试 parse', () => {
                     callback({ "name": "test3" });
                     /* callback({ "name": "test4" }); */
                 `, undefined, true)).to.eql({ name: 'test3' });
-
-                expect(parse(`
-                    // callback({ "name": "test1" })
-                    /* callback({ "name": "test2" }) */
-                    callback({ "name": "test3" })
-                    /* callback({ "name": "test4" }) */
-                `, undefined, true)).to.eql({ name: 'test3' });
             });
 
             it('测试 JSON5 数据中包含注释', () => {
@@ -132,20 +94,42 @@ describe('测试 parse', () => {
                         /* 注释 */
                     });
                 `, true)).to.eql({ name: 'test' });
-
-                expect(parse(`
-                    callback({ 
-                        /* 注释 */
-                        name: "test" // 注释
-                        /* 注释 */
-                    })
-                `, true)).to.eql({ name: 'test' });
             });
         });
 
         it('测试 字符串中包含注释', function () {
             expect(parse('showMessage("123 // hello world");', undefined, true)).to.be('123 // hello world');
             expect(parse('showMessage("123 /* hello world */");', undefined, true)).to.be('123 /* hello world */');
+        });
+
+        it('测试 字符串中包含函数', function () {
+            expect(parse('showMessage("function a123({ \\"name\\": \\"test\\", \\"age\\": 18 })");', undefined, true)).to.be('function a123({ "name": "test", "age": 18 })');
+            expect(parse('showMessage("function a123({ \\"name\\": \\"test\\", \\"age\\": 18 });");', undefined, true)).to.be('function a123({ "name": "test", "age": 18 });');
+        });
+
+        it('测试 结尾包含多个分号', function () {
+            expect(parse('callback({ "name": "test", "age": 18 })')).to.eql({ name: 'test', age: 18 });
+            expect(parse('callback({ "name": "test", "age": 18 }) ')).to.eql({ name: 'test', age: 18 });
+
+            expect(parse('callback({ "name": "test", "age": 18 });')).to.eql({ name: 'test', age: 18 });
+            expect(parse('callback({ "name": "test", "age": 18 }); ')).to.eql({ name: 'test', age: 18 });
+
+            expect(parse('callback({ "name": "test", "age": 18 }); ;  ;  ;')).to.eql({ name: 'test', age: 18 });
+            expect(parse('callback({ "name": "test", "age": 18 }); ;  ;  ; ')).to.eql({ name: 'test', age: 18 });
+        });
+
+        describe('测试 数据被多个括号包裹', function () {
+            it('测试 解析 JSON', function () {
+                expect(parse('callback(( (  (   ("test")   )  ) ));')).to.be('test');
+                expect(parse('callback(( (  (   ({ "name": "test", "age": 18 })   )  ) ));')).to.eql({ name: 'test', age: 18 });
+                expect(parse('callback(( (  (   ([{ "name": "test", "age": 18 }])   )  ) ));')).to.eql([{ name: 'test', age: 18 }]);
+            });
+
+            it('测试 解析 JSON5', function () {
+                expect(parse('callback(( (  (   ("test")   )  ) ));')).to.be('test');
+                expect(parse('callback(( (  (   ({ name: "test", age: 18 })   )  ) ));', true)).to.eql({ name: 'test', age: 18 });
+                expect(parse('callback(( (  (   ([{ name: "test", age: 18 }])   )  ) ));', true)).to.eql([{ name: 'test', age: 18 }]);
+            });
         });
     });
 
@@ -156,13 +140,13 @@ describe('测试 parse', () => {
                 expect(parse('let user = { "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
                 expect(parse('const user = { "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
 
-                expect(parse('var user = { "name": "test", "age": 18 }')).to.eql({ name: 'test', age: 18 });
+                expect(parse('var user ={ "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
+                expect(parse('var user= { "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
                 expect(parse('var user={ "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
-                expect(parse('var user={ "name": "test", "age": 18 }')).to.eql({ name: 'test', age: 18 });
 
-                expect(parse('user = { "name": "test", "age": 18 }')).to.eql({ name: 'test', age: 18 });
+                expect(parse('user ={ "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
+                expect(parse('user= { "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
                 expect(parse('user={ "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
-                expect(parse('user={ "name": "test", "age": 18 }')).to.eql({ name: 'test', age: 18 });
             });
 
             it('测试 解析 JSON5', function () {
@@ -170,13 +154,13 @@ describe('测试 parse', () => {
                 expect(parse('let user = { name: "test", age: 18 };', true)).to.eql({ name: 'test', age: 18 });
                 expect(parse('const user = { name: "test", age: 18 };', true)).to.eql({ name: 'test', age: 18 });
 
-                expect(parse('var user = { name: "test", age: 18 }', true)).to.eql({ name: 'test', age: 18 });
+                expect(parse('var user ={ name: "test", age: 18 };', true)).to.eql({ name: 'test', age: 18 });
+                expect(parse('var user= { name: "test", age: 18 };', true)).to.eql({ name: 'test', age: 18 });
                 expect(parse('var user={ name: "test", age: 18 };', true)).to.eql({ name: 'test', age: 18 });
-                expect(parse('var user={ name: "test", age: 18 }', true)).to.eql({ name: 'test', age: 18 });
 
-                expect(parse('user = { name: "test", age: 18 }', true)).to.eql({ name: 'test', age: 18 });
+                expect(parse('user ={ name: "test", age: 18 };', true)).to.eql({ name: 'test', age: 18 });
+                expect(parse('user= { name: "test", age: 18 };', true)).to.eql({ name: 'test', age: 18 });
                 expect(parse('user={ name: "test", age: 18 };', true)).to.eql({ name: 'test', age: 18 });
-                expect(parse('user={ name: "test", age: 18 }', true)).to.eql({ name: 'test', age: 18 });
             });
         });
 
@@ -186,13 +170,13 @@ describe('测试 parse', () => {
                 expect(parse('let user = [{ "name": "test", "age": 18 }];')).to.eql([{ name: 'test', age: 18 }]);
                 expect(parse('const user = [{ "name": "test", "age": 18 }];')).to.eql([{ name: 'test', age: 18 }]);
 
-                expect(parse('var user = [{ "name": "test", "age": 18 }]')).to.eql([{ name: 'test', age: 18 }]);
+                expect(parse('var user =[{ "name": "test", "age": 18 }];')).to.eql([{ name: 'test', age: 18 }]);
+                expect(parse('var user= [{ "name": "test", "age": 18 }];')).to.eql([{ name: 'test', age: 18 }]);
                 expect(parse('var user=[{ "name": "test", "age": 18 }];')).to.eql([{ name: 'test', age: 18 }]);
-                expect(parse('var user=[{ "name": "test", "age": 18 }]')).to.eql([{ name: 'test', age: 18 }]);
 
-                expect(parse('user = [{ "name": "test", "age": 18 }]')).to.eql([{ name: 'test', age: 18 }]);
+                expect(parse('user =[{ "name": "test", "age": 18 }];')).to.eql([{ name: 'test', age: 18 }]);
+                expect(parse('user= [{ "name": "test", "age": 18 }];')).to.eql([{ name: 'test', age: 18 }]);
                 expect(parse('user=[{ "name": "test", "age": 18 }];')).to.eql([{ name: 'test', age: 18 }]);
-                expect(parse('user=[{ "name": "test", "age": 18 }]')).to.eql([{ name: 'test', age: 18 }]);
             });
 
             it('测试 解析 JSON5', function () {
@@ -200,13 +184,13 @@ describe('测试 parse', () => {
                 expect(parse('let user = [{ name: "test", age: 18 }];', true)).to.eql([{ name: 'test', age: 18 }]);
                 expect(parse('const user = [{ name: "test", age: 18 }];', true)).to.eql([{ name: 'test', age: 18 }]);
 
-                expect(parse('var user = [{ name: "test", age: 18 }]', true)).to.eql([{ name: 'test', age: 18 }]);
+                expect(parse('var user =[{ name: "test", age: 18 }];', true)).to.eql([{ name: 'test', age: 18 }]);
+                expect(parse('var user= [{ name: "test", age: 18 }];', true)).to.eql([{ name: 'test', age: 18 }]);
                 expect(parse('var user=[{ name: "test", age: 18 }];', true)).to.eql([{ name: 'test', age: 18 }]);
-                expect(parse('var user=[{ name: "test", age: 18 }]', true)).to.eql([{ name: 'test', age: 18 }]);
 
-                expect(parse('user = [{ name: "test", age: 18 }]', true)).to.eql([{ name: 'test', age: 18 }]);
+                expect(parse('user =[{ name: "test", age: 18 }];', true)).to.eql([{ name: 'test', age: 18 }]);
+                expect(parse('user= [{ name: "test", age: 18 }];', true)).to.eql([{ name: 'test', age: 18 }]);
                 expect(parse('user=[{ name: "test", age: 18 }];', true)).to.eql([{ name: 'test', age: 18 }]);
-                expect(parse('user=[{ name: "test", age: 18 }]', true)).to.eql([{ name: 'test', age: 18 }]);
             });
         });
 
@@ -216,13 +200,13 @@ describe('测试 parse', () => {
                 expect(parse('let message = "hello world";')).to.be('hello world');
                 expect(parse('const message = "hello world";')).to.be('hello world');
 
-                expect(parse('var message = "hello world"')).to.be('hello world');
+                expect(parse('var message ="hello world";')).to.be('hello world');
+                expect(parse('var message= "hello world";')).to.be('hello world');
                 expect(parse('var message="hello world";')).to.be('hello world');
-                expect(parse('var message="hello world"')).to.be('hello world');
 
-                expect(parse('message = "hello world"')).to.be('hello world');
+                expect(parse('message ="hello world";')).to.be('hello world');
+                expect(parse('message= "hello world";')).to.be('hello world');
                 expect(parse('message="hello world";')).to.be('hello world');
-                expect(parse('message="hello world"')).to.be('hello world');
             });
 
             it('测试 解析数字', () => {
@@ -230,13 +214,13 @@ describe('测试 parse', () => {
                 expect(parse('let count = 123.45;')).to.be(123.45);
                 expect(parse('const count = 123.45;')).to.be(123.45);
 
-                expect(parse('var count = 123.45')).to.be(123.45);
+                expect(parse('var count =123.45;')).to.be(123.45);
+                expect(parse('var count= 123.45;')).to.be(123.45);
                 expect(parse('var count=123.45;')).to.be(123.45);
-                expect(parse('var count=123.45')).to.be(123.45);
 
-                expect(parse('count = 123.45')).to.be(123.45);
+                expect(parse('count =123.45;')).to.be(123.45);
+                expect(parse('count= 123.45;')).to.be(123.45);
                 expect(parse('count=123.45;')).to.be(123.45);
-                expect(parse('count=123.45')).to.be(123.45);
             });
 
             it('测试 解析布尔', () => {
@@ -244,13 +228,13 @@ describe('测试 parse', () => {
                 expect(parse('let is = true;')).to.be(true);
                 expect(parse('const is = true;')).to.be(true);
 
-                expect(parse('var is = true')).to.be(true);
+                expect(parse('var is =true;')).to.be(true);
+                expect(parse('var is= true;')).to.be(true);
                 expect(parse('var is=true;')).to.be(true);
-                expect(parse('var is=true')).to.be(true);
 
-                expect(parse('is = true')).to.be(true);
+                expect(parse('is =true;')).to.be(true);
+                expect(parse('is= true;')).to.be(true);
                 expect(parse('is=true;')).to.be(true);
-                expect(parse('is=true')).to.be(true);
             });
 
             it('测试 解析 null', () => {
@@ -258,13 +242,13 @@ describe('测试 parse', () => {
                 expect(parse('let handleNull = null;')).to.be(null);
                 expect(parse('const handleNull = null;')).to.be(null);
 
-                expect(parse('var handleNull = null')).to.be(null);
+                expect(parse('var handleNull =null;')).to.be(null);
+                expect(parse('var handleNull= null;')).to.be(null);
                 expect(parse('var handleNull=null;')).to.be(null);
-                expect(parse('var handleNull=null')).to.be(null);
 
-                expect(parse('handleNull = null')).to.be(null);
+                expect(parse('handleNull =null;')).to.be(null);
+                expect(parse('handleNull= null;')).to.be(null);
                 expect(parse('handleNull=null;')).to.be(null);
-                expect(parse('handleNull=null')).to.be(null);
             });
         });
 
@@ -274,25 +258,17 @@ describe('测试 parse', () => {
                 expect(parse('var user = { "name": "test" };// 行注释', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('var user = { "name": "test" };//行注释', undefined, true)).to.eql({ name: 'test' });
 
-                expect(parse('var user = { "name": "test" } // 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user = { "name": "test" }// 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user = { "name": "test" }//行注释', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('var user={ "name": "test" }; // 行注释', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('var user={ "name": "test" };// 行注释', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('var user={ "name": "test" };//行注释', undefined, true)).to.eql({ name: 'test' });
 
-                expect(parse('var user={ "name": "test" } // 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user={ "name": "test" }// 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user={ "name": "test" }//行注释', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('user = { "name": "test" } // 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user = { "name": "test" }// 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user = { "name": "test" }//行注释', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('user = { "name": "test" }; // 行注释', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('user = { "name": "test" };// 行注释', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('user = { "name": "test" };//行注释', undefined, true)).to.eql({ name: 'test' });
 
                 expect(parse('user={ "name": "test" }; // 行注释', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('user={ "name": "test" };// 行注释', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('user={ "name": "test" };//行注释', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('user={ "name": "test" } // 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user={ "name": "test" }// 行注释', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user={ "name": "test" }//行注释', undefined, true)).to.eql({ name: 'test' });
             });
 
             it('测试 开头的块注释', () => {
@@ -301,30 +277,20 @@ describe('测试 parse', () => {
                 expect(parse('/* 注释*/var user = { "name": "test" };', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('/*注释*/var user = { "name": "test" };', undefined, true)).to.eql({ name: 'test' });
 
-                expect(parse('/* 注释 */ var user = { "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释 */var user = { "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释*/var user = { "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/*注释*/var user = { "name": "test" }', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('/* 注释 */ var user={ "name": "test" };', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('/* 注释 */var user={ "name": "test" };', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('/* 注释*/var user={ "name": "test" };', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('/*注释*/var user={ "name": "test" };', undefined, true)).to.eql({ name: 'test' });
 
-                expect(parse('/* 注释 */ var user={ "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释 */var user={ "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释*/var user={ "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/*注释*/var user={ "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('/* 注释 */ user = { "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释 */user = { "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释*/user = { "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/*注释*/user = { "name": "test" }', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('/* 注释 */ user = { "name": "test" };', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('/* 注释 */user = { "name": "test" };', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('/* 注释*/user = { "name": "test" };', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('/*注释*/user = { "name": "test" };', undefined, true)).to.eql({ name: 'test' });
 
                 expect(parse('/* 注释 */ user={ "name": "test" };', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('/* 注释 */user={ "name": "test" };', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('/* 注释*/user={ "name": "test" };', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('/*注释*/user={ "name": "test" };', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('/* 注释 */ user={ "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释 */user={ "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释*/user={ "name": "test" }', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/*注释*/user={ "name": "test" }', undefined, true)).to.eql({ name: 'test' });
             });
 
             it('测试 结尾的块注释', () => {
@@ -333,44 +299,28 @@ describe('测试 parse', () => {
                 expect(parse('var user = { "name": "test" };/*注释 */', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('var user = { "name": "test" };/*注释*/', undefined, true)).to.eql({ name: 'test' });
 
-                expect(parse('var user = { "name": "test" } /* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user = { "name": "test" }/* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user = { "name": "test" }/*注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user = { "name": "test" }/*注释*/', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('var user={ "name": "test" }; /* 注释 */', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('var user={ "name": "test" };/* 注释 */', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('var user={ "name": "test" };/*注释 */', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('var user={ "name": "test" };/*注释*/', undefined, true)).to.eql({ name: 'test' });
 
-                expect(parse('var user={ "name": "test" } /* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user={ "name": "test" }/* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user={ "name": "test" }/*注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var user={ "name": "test" }/*注释*/', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('user = { "name": "test" } /* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user = { "name": "test" }/* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user = { "name": "test" }/*注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user = { "name": "test" }/*注释*/', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('user = { "name": "test" }; /* 注释 */', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('user = { "name": "test" };/* 注释 */', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('user = { "name": "test" };/*注释 */', undefined, true)).to.eql({ name: 'test' });
+                expect(parse('user = { "name": "test" };/*注释*/', undefined, true)).to.eql({ name: 'test' });
 
                 expect(parse('user={ "name": "test" }; /* 注释 */', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('user={ "name": "test" };/* 注释 */', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('user={ "name": "test" };/*注释 */', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('user={ "name": "test" };/*注释*/', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('user={ "name": "test" } /* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user={ "name": "test" }/* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user={ "name": "test" }/*注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('user={ "name": "test" }/*注释*/', undefined, true)).to.eql({ name: 'test' });
             });
 
             it('测试 夹杂在数据之间的块注释', () => {
                 expect(parse('var /* 注释 */ user /* 注释 */ = /* 注释 */ { "name": "test" } /* 注释 */;', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('var/* 注释 */user/* 注释 */=/* 注释 */{ "name": "test" }/* 注释 */;', undefined, true)).to.eql({ name: 'test' });
 
-                expect(parse('var /* 注释 */ user /* 注释 */ = /* 注释 */ { "name": "test" } /* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('var/* 注释 */user/* 注释 */=/* 注释 */{ "name": "test" }/* 注释 */', undefined, true)).to.eql({ name: 'test' });
-
                 expect(parse('/* 注释 */ user /* 注释 */ = /* 注释 */ { "name": "test" } /* 注释 */;', undefined, true)).to.eql({ name: 'test' });
                 expect(parse('/* 注释 */user/* 注释 */=/* 注释 */{ "name": "test" }/* 注释 */;', undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse('/* 注释 */ user /* 注释 */ = /* 注释 */ { "name": "test" } /* 注释 */', undefined, true)).to.eql({ name: 'test' });
-                expect(parse('/* 注释 */user/* 注释 */=/* 注释 */{ "name": "test" }/* 注释 */', undefined, true)).to.eql({ name: 'test' });
             });
 
             it('测试 开头与结尾的块注释', () => {
@@ -382,13 +332,7 @@ describe('测试 parse', () => {
 
                 expect(parse(`
                     /* 注释 */
-                    var user = { "name": "test" }
-                    /* 注释 */
-                `, undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse(`
-                    /* 注释 */
-                    var user={ "name": "test" }
+                    var user={ "name": "test" };
                     /* 注释 */
                 `, undefined, true)).to.eql({ name: 'test' });
 
@@ -400,13 +344,7 @@ describe('测试 parse', () => {
 
                 expect(parse(`
                     /* 注释 */
-                    user = { "name": "test" }
-                    /* 注释 */
-                `, undefined, true)).to.eql({ name: 'test' });
-
-                expect(parse(`
-                    /* 注释 */
-                    user={ "name": "test" }
+                    user={ "name": "test" };
                     /* 注释 */
                 `, undefined, true)).to.eql({ name: 'test' });
             });
@@ -420,17 +358,10 @@ describe('测试 parse', () => {
                 `, undefined, true)).to.eql({ name: 'test3' });
 
                 expect(parse(`
-                    // var user = { "name": "test1" }
-                    /* var user = { "name": "test2" } */
-                    var user = { "name": "test3" }
-                    /* var user = { "name": "test4" } */
-                `, undefined, true)).to.eql({ name: 'test3' });
-
-                expect(parse(`
-                    // var user={ "name": "test1" }
-                    /* var user={ "name": "test2" } */
-                    var user={ "name": "test3" }
-                    /* var user={ "name": "test4" } */
+                    // var user={ "name": "test1" };
+                    /* var user={ "name": "test2" }; */
+                    var user={ "name": "test3" };
+                    /* var user={ "name": "test4" }; */
                 `, undefined, true)).to.eql({ name: 'test3' });
 
                 expect(parse(`
@@ -441,17 +372,10 @@ describe('测试 parse', () => {
                 `, undefined, true)).to.eql({ name: 'test3' });
 
                 expect(parse(`
-                    // user = { "name": "test1" }
-                    /* user = { "name": "test2" } */
-                    user = { "name": "test3" }
-                    /* user = { "name": "test4" } */
-                `, undefined, true)).to.eql({ name: 'test3' });
-
-                expect(parse(`
-                    // user={ "name": "test1" }
-                    /* user={ "name": "test2" } */
-                    user={ "name": "test3" }
-                    /* user={ "name": "test4" } */
+                    // user={ "name": "test1" };
+                    /* user={ "name": "test2" }; */
+                    user={ "name": "test3" };
+                    /* user={ "name": "test4" }; */
                 `, undefined, true)).to.eql({ name: 'test3' });
             });
 
@@ -465,23 +389,7 @@ describe('测试 parse', () => {
                 `, true)).to.eql({ name: 'test' });
 
                 expect(parse(`
-                    var user = { 
-                        /* 注释 */
-                        name: "test" // 注释
-                        /* 注释 */
-                    }
-                `, true)).to.eql({ name: 'test' });
-
-                expect(parse(`
                     var user={ 
-                        /* 注释 */
-                        name: "test" // 注释
-                        /* 注释 */
-                    }
-                `, true)).to.eql({ name: 'test' });
-
-                expect(parse(`
-                    user = { 
                         /* 注释 */
                         name: "test" // 注释
                         /* 注释 */
@@ -493,7 +401,7 @@ describe('测试 parse', () => {
                         /* 注释 */
                         name: "test" // 注释
                         /* 注释 */
-                    }
+                    };
                 `, true)).to.eql({ name: 'test' });
 
                 expect(parse(`
@@ -501,7 +409,7 @@ describe('测试 parse', () => {
                         /* 注释 */
                         name: "test" // 注释
                         /* 注释 */
-                    }
+                    };
                 `, true)).to.eql({ name: 'test' });
             });
         });
@@ -509,6 +417,36 @@ describe('测试 parse', () => {
         it('测试 字符串中包含注释', function () {
             expect(parse('var message="123 // hello world";', undefined, true)).to.be('123 // hello world');
             expect(parse('var message="123 /* hello world */";', undefined, true)).to.be('123 /* hello world */');
+        });
+
+        it('测试 字符串中包含函数', function () {
+            expect(parse('var message="function a123({ \\"name\\": \\"test\\", \\"age\\": 18 })";', undefined, true)).to.be('function a123({ "name": "test", "age": 18 })');
+            expect(parse('var message="function a123({ \\"name\\": \\"test\\", \\"age\\": 18 });";', undefined, true)).to.be('function a123({ "name": "test", "age": 18 });');
+        });
+
+        it('测试 结尾包含多个分号', function () {
+            expect(parse('var message={ "name": "test", "age": 18 }')).to.eql({ name: 'test', age: 18 });
+            expect(parse('var message={ "name": "test", "age": 18 } ')).to.eql({ name: 'test', age: 18 });
+
+            expect(parse('var message={ "name": "test", "age": 18 };')).to.eql({ name: 'test', age: 18 });
+            expect(parse('var message={ "name": "test", "age": 18 }; ')).to.eql({ name: 'test', age: 18 });
+
+            expect(parse('var message={ "name": "test", "age": 18 }; ;  ;  ;')).to.eql({ name: 'test', age: 18 });
+            expect(parse('var message={ "name": "test", "age": 18 }; ;  ;  ; ')).to.eql({ name: 'test', age: 18 });
+        });
+
+        describe('测试 数据被多个括号包裹', function () {
+            it('测试 解析 JSON', function () {
+                expect(parse('var message=(( (  (   ("test")   )  ) ));')).to.be('test');
+                expect(parse('var message=(( (  (   ({ "name": "test", "age": 18 })   )  ) ));')).to.eql({ name: 'test', age: 18 });
+                expect(parse('var message=(( (  (   ([{ "name": "test", "age": 18 }])   )  ) ));')).to.eql([{ name: 'test', age: 18 }]);
+            });
+
+            it('测试 解析 JSON5', function () {
+                expect(parse('var message=(( (  (   ("test")   )  ) ));')).to.be('test');
+                expect(parse('var message=(( (  (   ({ name: "test", age: 18 })   )  ) ));', true)).to.eql({ name: 'test', age: 18 });
+                expect(parse('var message=(( (  (   ([{ name: "test", age: 18 }])   )  ) ));', true)).to.eql([{ name: 'test', age: 18 }]);
+            });
         });
     });
 
